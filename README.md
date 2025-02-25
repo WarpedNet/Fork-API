@@ -5,3 +5,4 @@
 - DB_DATABASE = the database name
 - DB_USER = the username of the account for the database
 - DB_PASSWORD = the password for the account above
+- DB_CERT_LOC = the certificate location for the ssl connection to the database
