@@ -1,39 +1,70 @@
 const express = require('express');
 
-const api = express()
+const api = express();
 
-// Registering a user with a post request
-api.post('/register', async (req, res) => {
-    const user = await req.json();
-    register(user.username, user.password)
+// Fork CRUD
+
+api.route("/fork")
+.get(async (req, res) => {
+    const getAllForks = require("./lib/Fork/getAllForks");
+    const forks = getAllForks();
+    res.send(await forks);
 })
+.put(async (req, res) => {
+    const data = req.body;
+    const createFork = require("./lib/Fork/createFork");
+    createFork(data.creatorID, data.parentID, data.recipeName, data.recipeDesc, data.recipeMethod, data.bannerImg, data.img, data.icon);  
+});
 
-// Temporary Get requests for testing
-api.get('/register', (req, res) => {
-    const username = req.query.username;
-    const email = req.query.email;
-    const password = req.query.password;
-    const phone = req.query.phonenum;
-    res.send(`Hello ${username}\nEmail: ${email}\nPassword: ${password}\nPhone: ${phone}`)
-
-    const registerUser = require('./lib/register');
-    registerUser(username, email, password, phone);
+api.route("/fork/:id")
+.get(async (req, res) => {
+    const getFork = require("./lib/Fork/getFork");
+    const fork = getFork(req.params.id);
+    res.send(await fork);
 })
-
-api.get('/newFork', (req, res) => {
-    // const creatorID = req.query.id;
-    // const recipeName = req.query.rname;
-    // const recipeDesc = req.query.rdesc;
-    // const recipeMethod = req.query.rmethod;
-    const newFork = require('./lib/newFork');
-    // newFork(creatorID, recipeName, recipeDesc, recipeMethod)
-
-    // customer / Creator id
-    // forkid of the parent / id of the recipe that is being forked
-    // data 
-    newFork(3, 16, "test3", "test3", "test3", null, null, null);
+.post(async (req, res) => {
+    const updateFork = require("./lib/Fork/updateFork");
+    updateFork(req.body);
 })
+.delete(async (req, res) => {
+    const deleteFork = require("./lib/Fork/deleteFork");
+    deleteFork(req.params.id);
+});
+
+// WILL DELETE BELOW IF ABOVE WORKS
+
+// api.put("/fork", async (req, res) => {
+//     const data = req.body;
+//     const createFork = require("./lib/Fork/createFork");
+//     createFork(data.creatorID, data.parentID, data.recipeName, data.recipeDesc, data.recipeMethod, data.bannerImg, data.img, data.icon);
+// })
+
+// api.get("/fork", async (req, res) => {
+//     const getAllForks = require("./lib/Fork/getAllForks");
+//     const forks = getAllForks();
+//     res.send(await forks);
+// })
+// api.get("/fork/:id", async (req, res) => {
+//     const getFork = require("./lib/Fork/getFork");
+//     const fork = getFork(req.params.id);
+//     res.send(await fork);
+// })
+// //// INCOMPLETE
+// api.post("/fork/:id", async (req, res) => {
+//     const updateFork = require("./lib/Fork/updateFork");
+//     updateFork(req.body);
+// })
+
+// //// INCOMPLETE
+// api.delete("/fork/:id", async (req, res) => {
+//     const deleteFork = require("./lib/Fork/deleteFork");
+//     deleteFork(req.params.id);
+// })
+
+
+
+
 
 api.listen(process.env.API_PORT, () => {
-    console.log(`API listening on port ${process.env.API_PORT}`)
+    console.log(`API listening on port ${process.env.API_PORT}`);
 })
