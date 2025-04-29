@@ -32,6 +32,13 @@ api.route("/fork/:id")
     deleteFork(req.params.id);
 });
 
+api.route("/user")
+.put(async (req, res) => {
+    const data = req.body;
+    const createUser = require("./lib/Auth/register");
+    createUser(data.username, data.email, data.password)
+})
+
 api.listen(process.env.API_PORT, () => {
     console.log(`API listening on port ${process.env.API_PORT}`);
 })
