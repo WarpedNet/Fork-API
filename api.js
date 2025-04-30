@@ -1,6 +1,7 @@
 const express = require('express');
-
 const api = express();
+const bodyParser = require('body-parser')
+api.use(bodyParser.json())
 
 // Fork CRUD
 
@@ -36,7 +37,7 @@ api.route("/register")
 .put(async (req, res) => {
     const data = req.body;
     const createUser = require("./lib/Auth/register");
-    const success = createUser(data.username, data.email, data.password);
+    const success = await createUser(data.username, data.email, data.password);
     if (success) {
         res.status(200).send("Created User!");
     }
@@ -49,9 +50,9 @@ api.route("/login")
 .post(async (req, res) => {
     const data = req.body;
     const login = require("./lib/Auth/login");
-    const token = login(data.username, data.email, data.password);
-    if (token) {
-        res.status(200).send({ token })
+    const token = await login(data.username, data.password);
+    if (token != null) {
+        res.json({token: token})
     }
     else {
         res.status(401).send("Incorrect Login Details");
