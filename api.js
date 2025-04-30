@@ -32,12 +32,32 @@ api.route("/fork/:id")
     deleteFork(req.params.id);
 });
 
-api.route("/user")
+api.route("/register")
 .put(async (req, res) => {
     const data = req.body;
     const createUser = require("./lib/Auth/register");
-    createUser(data.username, data.email, data.password)
+    const success = createUser(data.username, data.email, data.password);
+    if (success) {
+        res.status(200).send("Created User!");
+    }
+    else {
+        res.status(401).send("Failed to create User, user already exists!");
+    }
 })
+
+api.route("/login")
+.post(async (req, res) => {
+    const data = req.body;
+    const login = require("./lib/Auth/login");
+    const token = login(data.username, data.email, data.password);
+    if (token) {
+        res.status(200).send({ token })
+    }
+    else {
+        res.status(401).send("Incorrect Login Details");
+    }
+});
+
 
 api.listen(process.env.API_PORT, () => {
     console.log(`API listening on port ${process.env.API_PORT}`);
