@@ -1,7 +1,7 @@
 const express = require('express');
 const api = express();
 const bodyParser = require('body-parser')
-api.use(bodyParser.json())
+api.use(bodyParser.json({limit: '50mb'}))
 
 // Fork CRUD
 
@@ -14,8 +14,23 @@ api.route("/fork")
 })
 .put(async (req, res) => {
     const data = req.body;
-    const createFork = require("./lib/Fork/createFork");
-    createFork(data.creatorID, data.parentID, data.recipeName, data.recipeDesc, data.recipeMethod, data.bannerImg, data.img, data.icon);  
+    if (data.token != null) {
+        const jwt = require('jsonwebtoken');
+        const createFork = require("./lib/Fork/createFork");
+        jwt.verify(data.token, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                res.status(401).send("Invalid user token!");
+            }
+            else {
+                createFork(user.userID, data.parentID, data.recipeName, data.recipeDesc, data.recipeMethod, data.bannerImg, data.icon);
+                res.status(200).send("Fork created!")
+            }
+        })
+    }
+    else {
+        res.status(401).send("Error, user token required!")
+    }
+
 });
 
 api.route("/fork/:id")
