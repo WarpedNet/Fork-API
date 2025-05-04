@@ -16,14 +16,18 @@ api.route("/fork")
     const data = req.body;
     if (data.token != null) {
         const jwt = require('jsonwebtoken');
-        const createFork = require("./lib/Fork/createFork");
         jwt.verify(data.token, process.env.JWT_SECRET, (err, user) => {
             if (err) {
                 res.status(401).send("Invalid user token!");
             }
             else {
-                createFork(user.userID, data.parentID, data.recipeName, data.recipeDesc, data.recipeMethod, data.bannerImg, data.icon);
-                res.status(200).send("Fork created!")
+                if (data.centralID == null) {
+                    const createFork = require("./lib/Fork/createFork");
+                    createFork(user.userID, data.parentID, data.recipeName, data.recipeDesc, data.recipeMethod, data.bannerImg, data.icon, res);
+                }
+                // else {
+                //     const updateFork = require("./lib/Fork/updateFork");
+                // }
             }
         })
     }
