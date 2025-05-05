@@ -25,9 +25,10 @@ api.route("/fork")
                     const createFork = require("./lib/Fork/createFork");
                     createFork(user.userID, data.parentID, data.recipeName, data.recipeDesc, data.recipeMethod, data.bannerImg, data.icon, res);
                 }
-                // else {
-                //     const updateFork = require("./lib/Fork/updateFork");
-                // }
+                else {
+                    const updateFork = require("./lib/Fork/updateFork");
+                    updateFork(user.userID, data.centralID, data.recipeName, data.recipeMethod, data.recipeDesc, data.bannerImg, data.icon);
+                }
             }
         })
     }
