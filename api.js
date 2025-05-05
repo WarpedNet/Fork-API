@@ -52,6 +52,13 @@ api.route("/fork/:id")
     deleteFork(req.params.id);
 });
 
+api.route("/search/:query")
+.get(async (req, res) => {
+    const searchFork = require("./lib/Fork/search");
+    const forks = searchFork(req.params.query);
+    res.send(await forks);
+})
+
 api.route("/register")
 .put(async (req, res) => {
     const data = req.body;
