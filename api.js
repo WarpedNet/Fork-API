@@ -9,7 +9,7 @@ api.route("/fork")
 .get(async (req, res) => {
     const getAllForks = require("./lib/Fork/getAllForks");
     const forks = getAllForks();
-    console.log("Sending all forks")
+    console.log("Get all forks")
     res.send(await forks);
 })
 .put(async (req, res) => {
@@ -41,8 +41,7 @@ api.route("/fork")
 api.route("/fork/:id")
 .get(async (req, res) => {
     const getFork = require("./lib/Fork/getFork");
-    const fork = getFork(req.params.id);
-    res.send(await fork);
+    getFork(req.params.id, res);
 })
 .post(async (req, res) => {
     const updateFork = require("./lib/Fork/updateFork");
@@ -62,6 +61,7 @@ api.route("/search/:query")
 
 api.route("/register")
 .put(async (req, res) => {
+    console.log("Register")
     const data = req.body;
     const createUser = require("./lib/Auth/register");
     const success = await createUser(data.username, data.email, data.password);
@@ -75,6 +75,7 @@ api.route("/register")
 
 api.route("/login")
 .post(async (req, res) => {
+    console.log("Login")
     const data = req.body;
     const login = require("./lib/Auth/login");
     const token = await login(data.username, data.password);
