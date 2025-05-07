@@ -87,6 +87,19 @@ api.route("/login")
     }
 });
 
+api.route("/user")
+.post(async (req, res) => {
+    console.log("Get User Info")
+    const data = req.body;
+    const getUser = require("./lib/Auth/getUser");
+    getUser(data.token, res);
+})
+.put(async (req, res) => {
+    console.log("Update User Info")
+    const data = req.body;
+    const updateUser = require("./lib/Auth/updateUser");
+    updateUser(data, res);
+})
 
 api.listen(process.env.API_PORT, () => {
     console.log(`API listening on port ${process.env.API_PORT}`);
