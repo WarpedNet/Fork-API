@@ -57,7 +57,7 @@ api.route("/search/:query")
     const searchFork = require("./lib/Fork/search");
     const forks = searchFork(req.params.query);
     res.send(await forks);
-})
+});
 
 api.route("/register")
 .put(async (req, res) => {
@@ -71,7 +71,7 @@ api.route("/register")
     else {
         res.status(401).send("Failed to create User, user already exists!");
     }
-})
+});
 
 api.route("/login")
 .post(async (req, res) => {
@@ -99,7 +99,23 @@ api.route("/user")
     const data = req.body;
     const updateUser = require("./lib/Auth/updateUser");
     updateUser(data, res);
-})
+});
+
+api.route("/forks/user")
+.post(async (req, res) => {
+    console.log("Get user forks")
+    const data = req.body;
+    const getUserForks = require("./lib/Fork/getUserForks");
+    getUserForks(data, res);  
+});
+
+api.route("/comment")
+.put(async (req, res) => {
+    console.log("Create comment")
+    const data = req.body;
+    const createComment = require("./lib/Fork/createComment");
+    createComment(data, res);
+});
 
 api.listen(process.env.API_PORT, () => {
     console.log(`API listening on port ${process.env.API_PORT}`);
