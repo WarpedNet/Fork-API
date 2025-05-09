@@ -64,13 +64,7 @@ api.route("/register")
     console.log("Register")
     const data = req.body;
     const createUser = require("./lib/Auth/register");
-    const success = await createUser(data.username, data.email, data.password);
-    if (success) {
-        res.status(200).send("Created User!");
-    }
-    else {
-        res.status(401).send("Failed to create User, user already exists!");
-    }
+    createUser(data.username, data.email, data.password, res);
 });
 
 api.route("/login")
@@ -78,13 +72,7 @@ api.route("/login")
     console.log("Login")
     const data = req.body;
     const login = require("./lib/Auth/login");
-    const token = await login(data.username, data.password);
-    if (token != null) {
-        res.json({token: token})
-    }
-    else {
-        res.status(401).send("Incorrect Login Details");
-    }
+    login(data.username, data.password, res);
 });
 
 api.route("/user")
