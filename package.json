@@ -4,7 +4,7 @@
   "description": "Backend API for Fork",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,10 +18,19 @@
   "homepage": "https://github.com/WarpedNet/Fork-API#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "https": "^1.0.0",
+    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
-    "pg-promise": "^11.10.2"
+    "pg-promise": "^11.10.2",
+    "supertest": "^7.1.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }

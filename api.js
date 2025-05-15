@@ -9,7 +9,7 @@ api.route("/fork")
 .get(async (req, res) => {
     const getAllForks = require("./lib/Fork/getAllForks");
     const forks = getAllForks();
-    console.log("Get all forks")
+    // console.log("Get all forks")
     res.send(await forks);
 })
 .put(async (req, res) => {
@@ -43,13 +43,10 @@ api.route("/fork/:id")
     const getFork = require("./lib/Fork/getFork");
     getFork(req.params.id, res);
 })
-.post(async (req, res) => {
-    const updateFork = require("./lib/Fork/updateFork");
-    updateFork(req.body);
-})
 .delete(async (req, res) => {
     const deleteFork = require("./lib/Fork/deleteFork");
-    deleteFork(req.params.id);
+    await deleteFork(req.params.id);
+    res.status(200).send("Fork deleted")
 });
 
 api.route("/search/:query")
@@ -61,15 +58,17 @@ api.route("/search/:query")
 
 api.route("/register")
 .put(async (req, res) => {
-    console.log("Register")
+    // console.log("Register")
     const data = req.body;
     const createUser = require("./lib/Auth/register");
-    createUser(data.username, data.email, data.password, res);
+    if (data.username && data.email && data.password) {
+        createUser(data.username, data.email, data.password, res);
+    }
 });
 
 api.route("/login")
 .post(async (req, res) => {
-    console.log("Login")
+    // console.log("Login")
     const data = req.body;
     const login = require("./lib/Auth/login");
     login(data.username, data.password, res);
@@ -77,13 +76,13 @@ api.route("/login")
 
 api.route("/user")
 .post(async (req, res) => {
-    console.log("Get User Info")
+    // console.log("Get User Info")
     const data = req.body;
     const getUser = require("./lib/Auth/getUser");
     getUser(data.token, res);
 })
 .put(async (req, res) => {
-    console.log("Update User Info")
+    // console.log("Update User Info")
     const data = req.body;
     const updateUser = require("./lib/Auth/updateUser");
     updateUser(data, res);
@@ -91,7 +90,7 @@ api.route("/user")
 
 api.route("/forks/user")
 .post(async (req, res) => {
-    console.log("Get user forks")
+    // console.log("Get user forks")
     const data = req.body;
     const getUserForks = require("./lib/Fork/getUserForks");
     getUserForks(data, res);  
@@ -99,12 +98,14 @@ api.route("/forks/user")
 
 api.route("/comment")
 .put(async (req, res) => {
-    console.log("Create comment")
+    // console.log("Create comment")
     const data = req.body;
     const createComment = require("./lib/Fork/createComment");
     createComment(data, res);
 });
 
-api.listen(process.env.API_PORT, () => {
-    console.log(`API listening on port ${process.env.API_PORT}`);
-})
+// api.listen(process.env.API_PORT, () => {
+//     console.log(`API listening on port ${process.env.API_PORT}`);
+// })
+
+module.exports = api;
