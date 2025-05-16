@@ -104,8 +104,9 @@ api.route("/comment")
     createComment(data, res);
 });
 
-// api.listen(process.env.API_PORT, () => {
-//     console.log(`API listening on port ${process.env.API_PORT}`);
-// })
+api.listen(process.env.API_PORT, () => {
+    console.log(`API listening on port ${process.env.API_PORT}`);
+})
 
-module.exports = api;
+// Export for testing (Supertest runs its own server so no listen required)
+// module.exports = api;
