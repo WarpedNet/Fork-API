@@ -6,3 +6,4 @@
 - DB_USER = the username of the account for the database
 - DB_PASSWORD = the password for the account above
 - DB_CERT_LOC = the certificate location for the ssl connection to the database
+- JWT_SECRET = secret key for json web tokens
